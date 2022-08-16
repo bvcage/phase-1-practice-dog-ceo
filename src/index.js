@@ -24,21 +24,45 @@ window.addEventListener('DOMContentLoaded', () => {
     fetch(BREED_URL)
     .then((response) => response.json())
     .then((data) => {
+
         const dogBreeds = data.message;
         Object.entries(dogBreeds).forEach(([breed, subBreed]) => {
+
+            // add breed as new line item
+            // use spans to format individual li's
             const newBreed = document.createElement('li');
-            newBreed.textContent = breed;
+            const breedSpan = document.createElement('span');
+            breedSpan.textContent = breed;
+            newBreed.appendChild(breedSpan);
+
+            // if there are subbreeds, implement nested ul & li's
             if (subBreed.length > 0) {
+
                 const subBreedList = document.createElement('ul');
                 subBreed.forEach((subBreed) => {
                     const newSubBreed = document.createElement('li');
-                    newSubBreed.textContent = subBreed;
+                    const subBreedSpan = document.createElement('span');
+                    subBreedSpan.textContent = subBreed;
+                    newSubBreed.appendChild(subBreedSpan);
                     subBreedList.appendChild(newSubBreed);
                 });
+
+                // add subbreed ul to main breed li
                 newBreed.appendChild(subBreedList);
             }
+
+            // add final breed line item to list
             dogBreedList.appendChild(newBreed);
         })
+    })
+    .then(() => {   // change color when line item is clicked on
+        const allBreedSpans = dogBreedList.querySelectorAll('span');
+        allBreedSpans.forEach((element) => {
+            element.addEventListener('click', (event) => {
+                const breedSpan = event.target;
+                breedSpan.style.color = 'blue';
+            });
+        });
     })
     .catch((error) => console.log(error));
 
