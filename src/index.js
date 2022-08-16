@@ -6,6 +6,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // html elements
     const dogImages = document.querySelector('#dog-image-container');
     const dogBreedList = document.querySelector('#dog-breeds');
+    const dogBreedFilter = document.querySelector('#breed-dropdown');
 
     // get & display dog images
     fetch(IMG_URL)
@@ -62,6 +63,21 @@ window.addEventListener('DOMContentLoaded', () => {
                 const breedSpan = event.target;
                 breedSpan.style.color = 'blue';
             });
+        });
+    })
+    .then(() => {   // filter breeds based on selection
+        dogBreedFilter.addEventListener('change', (event) => {
+            const beginLtr = event.target.value;
+            const allBreedSpans = dogBreedList.querySelectorAll(':scope > li');
+            allBreedSpans.forEach((dogBreed) => {
+                if (beginLtr === 'all') {
+                    dogBreed.style.display = 'list-item';
+                } else if (dogBreed.textContent.charAt(0) === beginLtr) {
+                    dogBreed.style.display = 'list-item';
+                } else {
+                    dogBreed.style.display = 'none';
+                }
+            })
         });
     })
     .catch((error) => console.log(error));
